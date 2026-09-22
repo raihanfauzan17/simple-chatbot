@@ -19,25 +19,33 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  justify-content: space-between;
+  box-sizing: border-box;
 }
 
-/* Header */
+.chatbot-wrapper {
+  width: 100%;
+  max-width: 520px;   
+  height: 85vh;  
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 20px; 
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header di dalam kotak */
 .chat-header {
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
-  padding: 16px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  padding: 14px 18px;
 }
 
 .header-container {
-  max-width: 800px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -69,25 +77,25 @@ body {
 /* Chat Box */
 .chat-box {
   flex: 1;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  background-color: #f4f6f8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%2310b981' fill-opacity='0.06'%3E%3Cpath d='M15 10h10v6H15zm2 8h6v2h-6zM35 5h4v15h-4zm20 3a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-4v-12zm-2 2v8h2a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zM95 12h8v4h-8zm-5-4h18v12H90zm6 16v4h6v-4zm-20-4l3 3 7-7-1-1-6 6-2-2zM12 40a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v4H12zm10 20v10h4V60zm35-18l12 12-3 3-12-12zm40 5h6v12h-6zm-25 15h12v4h-12zM20 90h4v15h-4zm35 5a4 4 0 1 1-8 0 4 4 0 0 1 8 0zm35-10h12v4H90zm-15 15h4v6h-4z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 140px 140px;
 }
 
 /* Balon Chat */
 .message {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 16px;
+  gap: 10px;
+  padding: 12px 14px;
   border-radius: 16px;
-  max-width: 80%;
+  max-width: 85%;
   border: 1px solid var(--border-color);
   box-sizing: border-box;
 }
@@ -95,6 +103,7 @@ body {
 .message.bot {
   background-color: var(--bg-surface);
   align-self: flex-start;
+  border-top-left-radius: 4px; /* Variasi gaya chat melengkung asymmetric */
 }
 
 .message.user {
@@ -102,23 +111,21 @@ body {
   border-color: var(--border-user-msg);
   align-self: flex-end;
   flex-direction: row-reverse;
+  border-top-right-radius: 4px;
 }
 
-/* Style untuk Balon Pesan Error Merah */
+/* Balon Pesan Error */
 .message.error-msg {
   background-color: #fef2f2;
   border-color: #fca5a5;
   align-self: flex-start;
+  border-top-left-radius: 4px;
 }
-.message.error-msg .sender-name {
-  color: #dc2626;
-}
-.message.error-msg .msg-text {
-  color: #991b1b;
-}
+.message.error-msg .sender-name { color: #dc2626; }
+.message.error-msg .msg-text { color: #991b1b; }
 
 .avatar {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   user-select: none;
 }
 
@@ -127,8 +134,8 @@ body {
 }
 
 .sender-name {
-  margin: 0 0 4px 0;
-  font-size: 0.75rem;
+  margin: 0 0 2px 0;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--accent-color);
 }
@@ -139,10 +146,10 @@ body {
 
 .msg-text {
   margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.5;
   color: var(--text-secondary);
-  white-space: pre-line; 
+  white-space: pre-line;
   word-break: break-word;
 }
 
@@ -150,15 +157,10 @@ body {
 .chat-footer {
   background-color: var(--bg-surface);
   border-top: 1px solid var(--border-color);
-  padding: 16px;
-  position: sticky;
-  bottom: 0;
-  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.05);
+  padding: 14px;
 }
 
 .form-container {
-  max-width: 800px;
-  margin: 0 auto;
   display: flex;
   gap: 8px;
 }
@@ -169,8 +171,8 @@ body {
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   border-radius: 12px;
-  padding: 12px 16px;
-  font-size: 0.875rem;
+  padding: 10px 14px;
+  font-size: 0.85rem;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -184,9 +186,9 @@ body {
   color: white;
   border: none;
   font-weight: 500;
-  padding: 12px 20px;
+  padding: 10px 16px;
   border-radius: 12px;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -199,14 +201,14 @@ body {
   transform: scale(0.95);
 }
 
-/* Scrollbar */
+/* Webkit Scrollbar */
 .chat-box::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 .chat-box::-webkit-scrollbar-track {
   background: transparent;
 }
 .chat-box::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
-  border-radius: 20px;
+  border-radius: 10px;
 }
