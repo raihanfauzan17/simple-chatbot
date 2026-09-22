@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatBox = document.getElementById("chat-box");
   const clearBtn = document.getElementById("clear-btn");
 
-  // Endpoint API Express lokal Anda
+  // Endpoint API
   const API_URL = "http://localhost:3000/api/chat";
 
   // get riwayat chat sebelumnya dari LocalStorage
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const userMessage = input.value.trim();
     if (!userMessage) return;
 
-    // reply pesan user ke layar UI
+    // reply pesan user
     appendMessage("user", userMessage);
     input.value = "";
     scrollToBottom();
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById(loadingId)?.remove();
 
       if (data.success) {
-        // Tampilkan respon teks asli hasil olahan Gemini
+        // Tampilkan respon teks asli hasil dari Gemini
         appendMessage("bot", data.result);
         // Masukkan respon asisten ke array percakapan dengan role 'model' sesuai SDK Gemini baru
         conversation.push({ role: "model", text: data.result });
