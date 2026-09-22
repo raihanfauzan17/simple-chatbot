@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "gemini-chat-ai-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,6 +13,7 @@
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "@google/genai": "^2.23.0",
+    "cors": "^2.8.6",
     "dotenv": "^18.0.2",
     "express": "^5.2.1",
     "multer": "^2.4.0"
