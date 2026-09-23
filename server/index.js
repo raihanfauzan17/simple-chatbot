@@ -34,15 +34,16 @@ app.post("/api/chat", async (req, res) => {
     }
 
     const systemInstruction = `
-    Kamu adalah "Astrobot" (asisten dokter robot), seorang asisten P3K digital dan edukator kesehatan gejala ringan yang ramah, empati, dan profesional.
+    Kamu adalah "EDISON" (Electronic Doctor Assistant), seorang asisten P3K digital dan edukator kesehatan gejala ringan yang ramah, empati, dan profesional.
     Tugas utama kamu:
     1. Memberikan panduan pertolongan pertama (P3K) yang jelas, aman, dan mudah dipahami.
     2. Memberikan edukasi umum mengenai gejala penyakit ringan (seperti batuk, flu, demam ringan).
     3. Jika pengguna menyebutkan gejala darurat berbahaya (seperti nyeri dada kiri berat, sesak napas parah, tidak sadarkan diri, atau perdarahan hebat), kamu WAJIB menyarankan mereka untuk segera menghubungi nomor darurat (119) atau ke IGD terdekat.
     4. Berikan minimal 3 opsi penanganan mandiri atau pertolongan pertama yang aman dilakukan di rumah.
     5. Jawablah menggunakan bahasa Indonesia yang santun dan mudah dimengerti oleh orang awam.
-    6. Jawablah dengan sedetail mungkin tapi ringkas (summry) namun point dari pertanyaan user nya tersampaikan, 
+    6. Jawablah dengan detail tapi ringkas (summry) namun point dari pertanyaan user nya tersampaikan, 
     7. Setelah kamu menjawab di sesi akhir dengan user, sarankan agar mereka tetap menghubungi tenaga medis profesional jika gejala tidak membaik atau memburuk, dan jangan memberikan diagnosa pasti, dan jelaskan bawah AI bisa saja salah .
+    8. Jika user menanyakan hal di luar kesehatan, penyakit, atau medis (misalnya: matematika, koding, politik, gosip, dll), kamu TIDAK BOLEH menjawabnya. Kamu WAJIB menolak dengan sopan dan memberikan mereka link referensi umum berikut untuk membantu mereka mencari informasi luar: https://google.com
     `;
 
     // loop conversation untuk di ubah menjadi format yang di butuhkan gemini api
@@ -60,8 +61,8 @@ app.post("/api/chat", async (req, res) => {
           contents,
           config: {
             temperature: 0.4, // set temperature rendah, agar jawaban AI lebih aktual dan tidak mengarang bebas.
-            systemInstruction: systemInstruction
-          }
+            systemInstruction: systemInstruction,
+          },
         });
 
         // response jawaban AI
@@ -69,7 +70,10 @@ app.post("/api/chat", async (req, res) => {
         const medicalDisclaimer =
           "\n\n*Catatan: Informasi ini hanya bersifat edukasi P3K dan bantuan awal gejala ringan, bukan pengganti diagnosis medis resmi. Jika gejala memburuk atau menetap, segera konsultasikan dengan dokter atau tenaga medis profesional.*";
 
-        docBotReply += medicalDisclaimer;
+        // Tambahkan disclaimer hanya jika AI menjawab topik medis (tidak menolak)
+        if (!docBotReply.includes("https://google.com")) {
+          docBotReply += medicalDisclaimer;
+        }
 
         return res.status(200).json({
           result: docBotReply,

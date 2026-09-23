@@ -83,9 +83,11 @@ body {
   flex-direction: column;
   gap: 12px;
   background-color: #f4f6f8;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%2310b981' fill-opacity='0.06'%3E%3Cpath d='M15 10h10v6H15zm2 8h6v2h-6zM35 5h4v15h-4zm20 3a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-4v-12zm-2 2v8h2a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zM95 12h8v4h-8zm-5-4h18v12H90zm6 16v4h6v-4zm-20-4l3 3 7-7-1-1-6 6-2-2zM12 40a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v4H12zm10 20v10h4V60zm35-18l12 12-3 3-12-12zm40 5h6v12h-6zm-25 15h12v4h-12zM20 90h4v15h-4zm35 5a4 4 0 1 1-8 0 4 4 0 0 1 8 0zm35-10h12v4H90zm-15 15h4v6h-4z'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 140px 140px;
+   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48ZyBmaWxsPSIjMTBiOTgxIiBmaWxsLW9wYWNpdHk9IjAuMDkiPjxwYXRoIGQ9Ik0xMCA1aDZ2NGgtNnptMiAxMGgydjRoLTJ6bTMwLTEwaDR2MTBoLTR6bTIwIDRoNnYyaC02ek0xNSAzNWg0djZoLTR6bTUwIDVoNHY0aC00ek0zNSA2NWgxMHYySDM1em01LTEwaDJ2NGgtMnoiLz48Y2lyY2xlIGN4PSIxMyIgY3k9IjI1IiByPSIzIi8+PGNpcmNsZSBjeD0iNjUiIGN5PSIyMCIgcj0iMiIvPjxwYXRoIGQ9Ik00NSAyNWMwLTIuMi0xLjgtNC00LTRzLTQgMS44LTQgNHYxMGMwIDIuMiAxLjggNCA0IDRzNC0xLjgtNC00VjI1em0tNiAwYzAtMS4xLjktMiAyLTJzMiAuOSAyIDJ2MTBjMCAxLjEtLjkgMi0yIDJzLTItLjktMi0yVjI1eiIvPjxwYXRoIGQ9Ik02OCA2MmMwLTMuMy0yLjctNi02LTZzLTYgMi43LTYgNnY2YzAgMy4zIDIuNyA2IDYgNnM2LTIuNyA2LTZ2LTZ6bS0xMCAwYzAtMi4yIDEuOC00IDQtNHM0IDEuOCA0IDR2NmMwIDIuMi0xLjggNC00IDRzLTQtMS44LTQtNHYtNnoiLz48cGF0aCBkPSJNMTIgNTVoOHY4aC04eiIvPjxwYXRoIGQ9Ik0xNSA1MmgydjE0aC0yeiIvPjxwYXRoIGQ9Ik05IDU4aDE0djJIOXoiLz48L2c+PC9zdmc+");
+  
+  background-repeat: repeat !important;
+  background-size: 90px 90px;
+  background-blend-mode: multiply;
 }
 
 /* Balon Chat */
@@ -199,6 +201,14 @@ body {
 
 .btn-send:active {
   transform: scale(0.95);
+}
+
+.btn-send.disabled, .btn-send:disabled {
+  background-color: #cbd5e1 !important;
+  color: #94a3b8 !important; 
+  cursor: not-allowed; 
+  transform: none !important;
+  opacity: 0.7;
 }
 
 /* Webkit Scrollbar */

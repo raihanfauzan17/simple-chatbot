@@ -3,12 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("user-input");
   const chatBox = document.getElementById("chat-box");
   const clearBtn = document.getElementById("clear-btn");
+  const sendBtn = form.querySelector(".btn-send");
 
   // Endpoint API
   const API_URL = "http://localhost:3000/api/chat";
 
   // get riwayat chat sebelumnya dari LocalStorage
-  let conversation = JSON.parse(localStorage.getItem("astrobot_history")) || [];
+  let conversation = JSON.parse(localStorage.getItem("Edison_history")) || [];
 
   // render chat history jika sudah ada sesi tersimpan
   conversation.forEach((msg) => {
@@ -18,6 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   scrollToBottom();
 
+  function toggleSendButton() {
+    if (input.value.trim() === "") {
+      sendBtn.disabled = true;
+      sendBtn.classList.add("disabled"); // disable jika inputan kosong
+    } else {
+      sendBtn.disabled = false;
+      sendBtn.classList.remove("disabled");
+    }
+  }
+
+  // jalankan function toggle button
+  toggleSendButton();
+
+  // cek jika user mengetik dan menghapus inputan, maka toggle button nya di panggil
+  input.addEventListener("input", toggleSendButton);
+
   // Submit chat
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -26,9 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!userMessage) return;
 
     // reply pesan user
-    appendMessage("user", userMessage);
+    const lastUserQuestionId = appendMessage("user", userMessage);
     input.value = "";
-    scrollToBottom();
+
+    toggleSendButton(); // non aktifkan kembali button kirim jika sudah mengirim chat
+    scrollToLastQuestion(lastUserQuestionId);
 
     // Input pesan user ke dalam array memori state percakapan
     conversation.push({ role: "user", text: userMessage });
@@ -37,9 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Tampilkan placeholder loading respon bot
     const loadingId = appendMessage(
       "bot",
-      "Astrobot sedang menganalisis gejala...",
+      "EDISON sedang menganalisis gejala...",
     );
-    scrollToBottom();
 
     try {
       // Call API backend
@@ -59,9 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.success) {
         // Tampilkan respon teks asli hasil dari Gemini
         appendMessage("bot", data.result);
-        // Masukkan respon asisten ke array percakapan dengan role 'model' sesuai SDK Gemini baru
+        // Masukkan respon chat ke array percakapan dengan role 'model'
         conversation.push({ role: "model", text: data.result });
         saveToLocalStorage();
+        scrollToLastQuestion(lastUserQuestionId);
       } else {
         appendMessage("bot", `Terjadi kendala: ${data.error}`);
       }
@@ -69,20 +88,18 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById(loadingId)?.remove();
       appendMessage(
         "bot",
-        "Gagal terhubung ke server backend. Pastikan aplikasi Express Anda sudah dijalankan.",
+        "Terjadi kesalahan, silahkan coba lagi nanti.",
       );
-      console.error("Integrasi Error:", error);
+      console.error("Terjadi Error:", error);
     }
-
-    scrollToBottom();
   });
 
   // Button hapus
   clearBtn.addEventListener("click", () => {
     if (confirm("Apakah Anda ingin menghapus seluruh riwayat obrolan?")) {
-      localStorage.removeItem("astrobot_history");
+      localStorage.removeItem("Edison_history");
       conversation = [];
-      // Refresh tampilan tersisa hanya balasan pembuka default
+      // Refresh tampilan, cuma sisakan defualt message
       location.reload();
     }
   });
@@ -107,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     msgDiv.innerHTML = `
         <div class="avatar">${isUser ? "👤" : isError ? "⚠️" : "🤖"}</div>
         <div class="msg-content">
-            <p class="sender-name">${isUser ? "Anda" : isError ? "Sistem Error" : "Astrobot"}</p>
+            <p class="sender-name">${isUser ? "Anda" : isError ? "Sistem Error" : "EDISON"}</p>
             <p class="msg-text">${text}</p>
         </div>
     `;
@@ -117,10 +134,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function saveToLocalStorage() {
-    localStorage.setItem("astrobot_history", JSON.stringify(conversation));
+    localStorage.setItem("Edison_history", JSON.stringify(conversation));
   }
 
   function scrollToBottom() {
     chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function scrollToLastQuestion(elementId) {
+    setTimeout(() => {
+      const lastQuestionElement = document.getElementById(elementId);
+      if (lastQuestionElement) {
+        lastQuestionElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
   }
 });
